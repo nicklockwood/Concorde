@@ -70,8 +70,8 @@ public class CCBufferedImageView : UIImageView, NSURLConnectionDataDelegate {
             }
             
             UIGraphicsBeginImageContext(CGSizeMake(1,1))
-            let context = UIGraphicsGetCurrentContext()
-            CGContextDrawImage(context, CGRectMake(0, 0, 1, 1), decodedImage.CGImage)
+            let context = UIGraphicsGetCurrentContext()!
+            CGContextDrawImage(context, CGRectMake(0, 0, 1, 1), decodedImage.CGImage!)
             UIGraphicsEndImageContext()
 
             dispatch_async(dispatch_get_main_queue()) {
