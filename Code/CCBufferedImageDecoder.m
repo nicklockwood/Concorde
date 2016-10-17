@@ -87,7 +87,7 @@ METHODDEF(void) my_output_message(j_common_ptr cinfo) { }
 
 -(instancetype)init {
     [self doesNotRecognizeSelector:_cmd];
-    return nil;
+    return [self initWithData: nil];
 }
 
 -(instancetype)initWithData:(NSData*)data {

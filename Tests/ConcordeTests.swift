@@ -13,19 +13,19 @@ import Quick
 
 class ConcordeTests: QuickSpec {
     override func spec() {
-        var crashData = NSData()
-        var nonProgressiveData = NSData()
-        var progressiveData = NSData()
+        var crashData = Data()
+        var nonProgressiveData = Data()
+        var progressiveData = Data()
 
         beforeEach {
-            var path = NSBundle(forClass: self.dynamicType).pathForResource("non-progressive", ofType: "jpg")
-            nonProgressiveData = NSData(contentsOfFile: path!)!
+            var path = Bundle(for: type(of: self)).path(forResource: "non-progressive", ofType: "jpg")
+            nonProgressiveData = try! Data(contentsOf: URL(fileURLWithPath: path!))
 
-            path = NSBundle(forClass: self.dynamicType).pathForResource("progressive", ofType: "jpg")
-            progressiveData = NSData(contentsOfFile: path!)!
+            path = Bundle(for: type(of: self)).path(forResource: "progressive", ofType: "jpg")
+            progressiveData = try! Data(contentsOf: URL(fileURLWithPath: path!))
 
-            path = NSBundle(forClass: self.dynamicType).pathForResource("crash", ofType: "jpg")
-            crashData = NSData(contentsOfFile: path!)!
+            path = Bundle(for: type(of: self)).path(forResource: "crash", ofType: "jpg")
+            crashData = try! Data(contentsOf: URL(fileURLWithPath: path!))
         }
 
         it("can decode non-progressive JPEGs") {
@@ -45,7 +45,7 @@ class ConcordeTests: QuickSpec {
         }
 
         it("can decode partial progressive JPEGs") {
-            let partialData = progressiveData.subdataWithRange(NSMakeRange(0, 7000))
+            let partialData = progressiveData.subdata(in: 0 ..< 7000)
             let decoder = CCBufferedImageDecoder(data: partialData)
             decoder.decompress()
 
@@ -54,7 +54,7 @@ class ConcordeTests: QuickSpec {
         }
 
         it("is resilient against errors in the data to decode") {
-            let partialData = progressiveData.subdataWithRange(NSMakeRange(0, 32768))
+            let partialData = progressiveData.subdata(in: 0 ..< 32768)
             let decoder = CCBufferedImageDecoder(data: partialData)
             decoder.decompress()
         }
@@ -91,7 +91,7 @@ class ConcordeTests: QuickSpec {
         }
 
         it("can be used in IB") {
-            let imageView = CCBufferedImageView(coder: NSKeyedUnarchiver(forReadingWithData: NSData()))
+            let imageView = CCBufferedImageView(coder: NSKeyedUnarchiver(forReadingWith: Data()))
 
             expect(imageView).toNot(beNil())
         }

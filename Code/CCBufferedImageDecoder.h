@@ -14,6 +14,8 @@
 #import <Cocoa/Cocoa.h>
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 /** JPEG decoding status */
 typedef NS_ENUM(NSInteger, CCDecodingStatus){
     /** Decoding failed */
@@ -41,7 +43,7 @@ typedef NS_ENUM(NSInteger, CCDecodingStatus){
  *
  *  @return An initialized decoder instance.
  */
--(instancetype)initWithData:(NSData*)data;
+-(instancetype)initWithData:(nullable NSData *)data NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Convert the result RGB data to an image instance.
@@ -49,9 +51,11 @@ typedef NS_ENUM(NSInteger, CCDecodingStatus){
  *  @return An image instance for use in Cocoa.
  */
 #if TARGET_OS_IPHONE
--(UIImage*)toImage;
+-(nullable UIImage *)toImage;
 #else
--(NSImage*)toImage;
+-(nullable NSImage *)toImage;
 #endif
 
 @end
+
+NS_ASSUME_NONNULL_END
